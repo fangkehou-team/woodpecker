@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="org.eu.fangkehou.WoodPecker" >
+
+    <application>
+        <activity
+            android:name=".DemoDialogActivity"
+            android:label="@string/lib_name"
+			android:theme="@style/DemoDialog">
+        </activity>
+
+		<service
+			android:name=".AnrMonitorService"
+			android:process=":anrMonitor"/>
+		
+		<service
+			android:name=".AnrHandlerService"
+			android:process=":anrMonitor" />
+		
+    </application>
+
+</manifest>
+

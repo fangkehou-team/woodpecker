@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="lib_name">WoodPecker</string>
+    <string name="demo_crash_title">诶呀。。。</string>
+	<string name="demo_crash_message">看起来我们的程序出了点儿问题。\n我们收集了一些重要的崩溃信息，你可以其发送给我们。\n点击下面的按钮即可重启APP。</string>
+	<string name="demo_crash_button_restart">Restart APP</string>
+	<string name="demo_crash_button_close">Close</string>
+
+</resources>
