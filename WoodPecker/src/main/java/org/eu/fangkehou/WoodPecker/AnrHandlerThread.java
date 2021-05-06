@@ -1,8 +1,10 @@
 package org.eu.fangkehou.WoodPecker;
+import android.util.*;
 
 public class AnrHandlerThread implements Runnable
 {
 	Boolean isContinue = true;
+	
 	
 	private static AnrHandlerThread instance = new AnrHandlerThread();
 	
@@ -22,6 +24,19 @@ public class AnrHandlerThread implements Runnable
 	public void run()
 	{
 		// TODO: Implement this method
+		while(this.isContinue){
+			
+			
+			
+			try
+			{
+				Thread.sleep(50L);
+			}
+			catch (InterruptedException e)
+			{
+				Log.e("fangkehouWoodPecker","AnrHandlerThread can not sleep");
+			}
+		}
 	}
 	
 }
