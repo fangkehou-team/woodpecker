@@ -13,10 +13,6 @@
 			android:name=".AnrMonitorService"
 			android:process=":anrMonitor"/>
 		
-		<service
-			android:name=".AnrHandlerService"
-			android:process=":anrMonitor" />
-		
     </application>
 
 </manifest>

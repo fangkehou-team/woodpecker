@@ -25,7 +25,7 @@ public class CrashBuilder
 	}
 	
 	public CrashHandler build(){
-		CrashHandler c = CrashHandler.getinstance();
+		CrashHandler c = CrashHandler.getInstance();
 		c.setProcesser(mprocesser);
 		c.setContext(mcontext);
 		return c;

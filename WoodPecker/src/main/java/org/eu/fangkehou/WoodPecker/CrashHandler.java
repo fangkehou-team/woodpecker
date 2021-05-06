@@ -46,7 +46,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 		return this.mprocesser;
 	}
 
-	public static CrashHandler getinstance()
+	public static CrashHandler getInstance()
 	{
 		return instance;
 	}
@@ -59,11 +59,10 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 		if (this.mcontext != null && this.mprocesser != null)
 		{
 			Thread.setDefaultUncaughtExceptionHandler(this);
-			//Log.i("fangkehouWoodPecker",String.valueOf(android.os.Process.myPid()));
+			
 			Intent i = new Intent(mcontext, AnrMonitorService.class);
 			i.putExtra("pid",android.os.Process.myPid());
 			mcontext.startService(i);
-			
 			return;
 		}
 
