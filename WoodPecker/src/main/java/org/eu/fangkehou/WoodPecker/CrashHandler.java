@@ -62,7 +62,31 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 			
 			Intent i = new Intent(mcontext, AnrMonitorService.class);
 			i.putExtra("pid",android.os.Process.myPid());
-			mcontext.startService(i);
+			//mcontext.startService(i);
+			final AnrHandlerThread mAnrHandlerThread = new AnrHandlerThread();
+			
+			ServiceConnection mConn = new ServiceConnection(){
+
+				@Override
+				public void onServiceConnected(ComponentName p1, IBinder p2)
+				{
+					// TODO: Implement this method
+					mAnrHandlerThread.setMessager(new Messenger(p2));
+					new Thread(mAnrHandlerThread).start();
+				}
+
+				@Override
+				public void onServiceDisconnected(ComponentName p1)
+				{
+					// TODO: Implement this method
+					mAnrHandlerThread.stopWorking();
+				}
+				
+				
+			};
+			
+			mcontext.bindService(i,mConn,mcontext.BIND_AUTO_CREATE);
+			
 			return;
 		}
 

@@ -30,7 +30,7 @@ public class AnrMonitorService extends Service
 	public IBinder onBind(Intent p1)
 	{
 		// TODO: Implement this method
-		return null;
+		return new Messenger(new ClassRecordHandler()).getBinder();
 	}
 
 	@Override
@@ -51,7 +51,7 @@ public class AnrMonitorService extends Service
 	}
 	
 	private void handleStackTrace(int pid, StackTraceElement[] stelements){
-		
+		Log.d("fangkehouWoodPecker","got StackTrace");
 	}
 
 	

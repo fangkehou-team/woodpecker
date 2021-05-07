@@ -1,22 +1,33 @@
 package org.eu.fangkehou.WoodPecker;
 import android.util.*;
+import android.os.*;
 
 public class AnrHandlerThread implements Runnable
 {
-	Boolean isContinue = true;
-	
-	
-	private static AnrHandlerThread instance = new AnrHandlerThread();
-	
-	private AnrHandlerThread(){
-		
+	private Boolean isContinue = true;
+	private Messenger mService = null;
+	private int pid = 0;
+
+	public AnrHandlerThread(Messenger mService)
+	{
+		this.mService = mService;
+		this.pid = android.os.Process.myPid();
 	}
-	
-	public static AnrHandlerThread getInstance(){
-		return instance;
+
+
+	public AnrHandlerThread()
+	{
+		this.pid = android.os.Process.myPid();
 	}
-	
-	public void stopWorking(){
+
+	public void setMessager(Messenger mService)
+	{
+		this.mService = mService;
+	}
+
+
+	public void stopWorking()
+	{
 		this.isContinue = false;
 	}
 
@@ -24,19 +35,32 @@ public class AnrHandlerThread implements Runnable
 	public void run()
 	{
 		// TODO: Implement this method
-		while(this.isContinue){
-			
-			
+		if (mService == null)
+		{
+			Log.e("fangkehouWoodPecker", "Can not start ANR monitor: Service not found");
+			return;
+		}
+
+		while (this.isContinue)
+		{
+
+			StackTraceElement[] st = Looper.getMainLooper().getThread().getStackTrace();
+			Message message = Message.obtain(null, pid, st);
 			
 			try
 			{
+				mService.send(message);
 				Thread.sleep(50L);
 			}
 			catch (InterruptedException e)
 			{
-				Log.e("fangkehouWoodPecker","AnrHandlerThread can not sleep");
+				Log.e("fangkehouWoodPecker", "AnrHandlerThread can not sleep", e);
+			}
+			catch (RemoteException e)
+			{
+				Log.e("fangkehouWoodPecker", "AnrHandlerThread send message error", e);
 			}
 		}
 	}
-	
+
 }
