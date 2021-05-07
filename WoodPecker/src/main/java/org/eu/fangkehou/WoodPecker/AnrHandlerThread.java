@@ -43,10 +43,15 @@ public class AnrHandlerThread implements Runnable
 
 		while (this.isContinue)
 		{
+			StringBuilder threadtagbuilder = new StringBuilder();
+			StackTraceElement st[] = Looper.getMainLooper().getThread().getStackTrace();
+			for (int i=0;i < st.length;i++)
+			{
+				threadtagbuilder.append(st[i] + "/n");
+			}
+			String threadtag =  threadtagbuilder.toString();
+			Message message = Message.obtain(null, pid, threadtag);
 
-			StackTraceElement[] st = Looper.getMainLooper().getThread().getStackTrace();
-			Message message = Message.obtain(null, pid, st);
-			
 			try
 			{
 				mService.send(message);
