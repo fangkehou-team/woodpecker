@@ -20,7 +20,7 @@ public class AnrMonitorService extends Service
 		public void handleMessage(Message msg)
 		{
 			// TODO: Implement this method
-			handleStackTrace(msg.what , (StackTraceElement[]) msg.obj);
+			handleThreadTag(msg.what , msg.getData());
 			super.handleMessage(msg);
 		}
 		
@@ -50,7 +50,7 @@ public class AnrMonitorService extends Service
 		super.onDestroy();
 	}
 	
-	private void handleStackTrace(int pid, StackTraceElement[] stelements){
+	private void handleThreadTag(int pid, Bundle bundle){
 		Log.d("fangkehouWoodPecker","got StackTrace");
 	}
 

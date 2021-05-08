@@ -50,8 +50,10 @@ public class AnrHandlerThread implements Runnable
 				threadtagbuilder.append(st[i] + "/n");
 			}
 			String threadtag =  threadtagbuilder.toString();
-			Message message = Message.obtain(null, pid, threadtag);
-
+			Message message = Message.obtain(null, pid);
+			Bundle bundle = new Bundle();
+			bundle.putString("tag",threadtag);
+			message.setData(bundle);
 			try
 			{
 				mService.send(message);

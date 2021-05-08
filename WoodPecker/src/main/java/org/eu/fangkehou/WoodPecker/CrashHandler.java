@@ -17,6 +17,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 	private ProcesserBase mprocesser;
 	private Thread.UncaughtExceptionHandler defaultHandler;
 	private String logcatheader = "fangkehouWoodPecker";
+	AnrHandlerThread mAnrHandlerThread = new AnrHandlerThread();
 
 	private Map<String, String> infos = new HashMap<String, String>();
 
@@ -62,8 +63,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 			
 			Intent i = new Intent(mcontext, AnrMonitorService.class);
 			i.putExtra("pid",android.os.Process.myPid());
-			//mcontext.startService(i);
-			final AnrHandlerThread mAnrHandlerThread = new AnrHandlerThread();
 			
 			ServiceConnection mConn = new ServiceConnection(){
 
@@ -87,7 +86,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 			
 			mcontext.bindService(i,mConn,mcontext.BIND_AUTO_CREATE);
 			
-			return;
 		}
 
 		// TODO: Implement this method

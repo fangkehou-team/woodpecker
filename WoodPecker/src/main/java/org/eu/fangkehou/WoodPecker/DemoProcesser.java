@@ -2,7 +2,7 @@ package org.eu.fangkehou.WoodPecker;
 import android.content.*;
 import android.app.*;
 
-public class DemoProcesser extends ProcesserBase
+public class DemoProcesser implements ProcesserBase
 {
 
 	@Override

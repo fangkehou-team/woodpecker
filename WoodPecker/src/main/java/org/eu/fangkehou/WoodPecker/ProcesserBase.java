@@ -1,7 +1,7 @@
 package org.eu.fangkehou.WoodPecker;
 import android.content.*;
 
-public abstract class ProcesserBase
+public interface ProcesserBase
 {
 	
 	public abstract void onCrash(Context mContext,Throwable e,String report)
