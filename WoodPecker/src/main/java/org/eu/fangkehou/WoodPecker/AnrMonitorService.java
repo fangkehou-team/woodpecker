@@ -1,17 +1,13 @@
 package org.eu.fangkehou.WoodPecker;
 import android.app.*;
 import android.content.*;
-import android.content.pm.*;
 import android.os.*;
 import android.util.*;
-import java.lang.reflect.*;
-import android.widget.*;
-import java.util.*;
+import java.util.concurrent.*;
 
 public class AnrMonitorService extends Service
 {
-	
-	private static int pid;
+	private static ConcurrentHashMap<Integer,CrashElement.ThreadTagElement> currentTag = new ConcurrentHashMap<Integer,CrashElement.ThreadTagElement>();
 	
 	private class ClassRecordHandler extends Handler
 	{
@@ -37,8 +33,8 @@ public class AnrMonitorService extends Service
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
 		// TODO: Implement this method
-		pid = intent.getIntExtra("pid",0);
-		Log.i("fangkehouWoodPecker","Starting ANR Monitor for " + pid + "(UI Thread Only)");
+		int pid = intent.getIntExtra("pid",0);
+		Log.i("fangkehouWoodPecker","Starting ANR Monitor for PID" + pid + "(UI Thread Only)");
 		
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -50,8 +46,33 @@ public class AnrMonitorService extends Service
 		super.onDestroy();
 	}
 	
-	private void handleThreadTag(int pid, Bundle bundle){
-		Log.d("fangkehouWoodPecker","got StackTrace");
+	private void handleThreadTag(int tagPid, Bundle bundle){
+		String tag = bundle.getString("tag","none");
+		
+		if(tag.contains("android.os.MessageQueue")){
+			return;
+		}
+		
+		long currentTime = System.currentTimeMillis();
+		if(!currentTag.containsKey(tagPid)){
+			currentTag.put(tagPid,new CrashElement.ThreadTagElement(tag,currentTime));
+		}
+		
+		CrashElement.ThreadTagElement currentTagElement = currentTag.get(tagPid);
+		long deltaTime = currentTime - currentTagElement.startTime;
+		
+		if(currentTagElement.tag == tag && deltaTime > 1000){
+			//ANR occured
+			Log.i("a cute woodpecker","Wow! It seems that you have put too much work on this thread");
+			return;
+		}
+		
+		if(currentTagElement.tag != tag){
+			currentTag.replace(tagPid,new CrashElement.ThreadTagElement(tag,currentTime));
+			return;
+		}
+		
+		return;
 	}
 
 	

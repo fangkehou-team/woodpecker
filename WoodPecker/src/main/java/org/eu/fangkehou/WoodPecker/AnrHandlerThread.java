@@ -47,7 +47,7 @@ public class AnrHandlerThread implements Runnable
 			StackTraceElement st[] = Looper.getMainLooper().getThread().getStackTrace();
 			for (int i=0;i < st.length;i++)
 			{
-				threadtagbuilder.append(st[i] + "/n");
+				threadtagbuilder.append(st[i] + "\n");
 			}
 			String threadtag =  threadtagbuilder.toString();
 			Message message = Message.obtain(null, pid);
