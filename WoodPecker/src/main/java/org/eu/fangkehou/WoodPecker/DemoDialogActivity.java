@@ -4,9 +4,17 @@ import android.graphics.*;
 import android.os.*;
 import android.view.*;
 import android.widget.*;
+import android.view.View.*;
 
-public class DemoDialogActivity extends Activity
+public class DemoDialogActivity extends Activity implements OnClickListener
 {
+
+	@Override
+	public void onClick(View p1)
+	{
+		// TODO: Implement this method
+	}
+	
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState)

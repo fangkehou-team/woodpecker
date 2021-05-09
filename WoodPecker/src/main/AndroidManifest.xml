@@ -10,8 +10,8 @@
         </activity>
 
 		<service
-			android:name=".AnrMonitorService"
-			android:process=":anrMonitor"/>
+			android:name=".ANRMonitorService"
+			android:process=":ANRMonitor"/>
 		
     </application>
 

@@ -3,56 +3,51 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	android:layout_height="wrap_content"
 	android:layout_width="match_parent"
+	android:gravity="center"
 	android:orientation="vertical"
+	android:background="#FFFFFFFF"
 	android:id="@+id/DemoCrashDialogRootLinearLayout">
 
-	<LinearLayout
+
+	<TextView
+		android:layout_width="match_parent"
+		android:layout_height="40dp"
+		android:text="@string/demo_crash_title"
+		android:textAppearance="?android:attr/textAppearanceLarge"
+		android:padding="5dp"/>
+
+	<TextView
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
-		android:gravity="center"
-		android:orientation="vertical"
-		android:background="#FFFFFFFF">
+		android:text="@string/demo_crash_message"
+		android:textAppearance="?android:attr/textAppearanceSmall"
+		android:padding="3dp"/>
 
-		<TextView
-			android:layout_width="match_parent"
-			android:layout_height="40dp"
-			android:text="@string/demo_crash_title"
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:padding="5dp"/>
+	<LinearLayout
+		android:orientation="horizontal"
+		android:layout_width="match_parent"
+		android:layout_height="wrap_content">
 
-		<TextView
+		<Button
 			android:layout_width="match_parent"
 			android:layout_height="wrap_content"
-			android:text="@string/demo_crash_message"
-			android:textAppearance="?android:attr/textAppearanceSmall"
-			android:padding="3dp"/>
+			android:text="@string/demo_crash_button_close"
+			android:background="#FF7770"
+			android:textColor="#FFFFFF"
+			android:layout_weight="1.0"
+			android:id="@+id/DemoCrashDialogCloseButton"/>
 
-		<LinearLayout
-			android:orientation="horizontal"
+		<Button
 			android:layout_width="match_parent"
-			android:layout_height="wrap_content">
-
-			<Button
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/demo_crash_button_close"
-				android:background="#FF7770"
-				android:textColor="#FFFFFF"
-				android:layout_weight="1.0"
-				android:id="@+id/DemoCrashDialogCloseButton"/>
-
-			<Button
-				android:layout_width="match_parent"
-				android:layout_height="wrap_content"
-				android:text="@string/demo_crash_button_restart"
-				android:layout_weight="1.0"
-				android:textColor="#FFFFFF"
-				android:background="#A070FF"
-				android:id="@+id/DemoCrashDialogRestartButton"/>
-
-		</LinearLayout>
+			android:layout_height="wrap_content"
+			android:text="@string/demo_crash_button_restart"
+			android:layout_weight="1.0"
+			android:textColor="#FFFFFF"
+			android:background="#A070FF"
+			android:id="@+id/DemoCrashDialogRestartButton"/>
 
 	</LinearLayout>
+	
 
 </LinearLayout>
 

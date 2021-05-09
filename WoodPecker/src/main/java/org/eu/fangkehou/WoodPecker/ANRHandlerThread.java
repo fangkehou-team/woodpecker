@@ -2,20 +2,20 @@ package org.eu.fangkehou.WoodPecker;
 import android.util.*;
 import android.os.*;
 
-public class AnrHandlerThread implements Runnable
+public class ANRHandlerThread implements Runnable
 {
 	private Boolean isContinue = true;
 	private Messenger mService = null;
 	private int pid = 0;
 
-	public AnrHandlerThread(Messenger mService)
+	public ANRHandlerThread(Messenger mService)
 	{
 		this.mService = mService;
 		this.pid = android.os.Process.myPid();
 	}
 
 
-	public AnrHandlerThread()
+	public ANRHandlerThread()
 	{
 		this.pid = android.os.Process.myPid();
 	}
@@ -57,7 +57,7 @@ public class AnrHandlerThread implements Runnable
 			try
 			{
 				mService.send(message);
-				Thread.sleep(50L);
+				Thread.sleep(CrashGlobal.sleepTime);
 			}
 			catch (InterruptedException e)
 			{
