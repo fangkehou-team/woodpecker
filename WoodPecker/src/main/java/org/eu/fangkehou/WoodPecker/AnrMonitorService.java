@@ -49,14 +49,14 @@ public class AnrMonitorService extends Service
 	private void handleThreadTag(int tagPid, Bundle bundle){
 		String tag = bundle.getString("tag","none");
 		
-		if(tag.contains("android.os.MessageQueue")){
+		if(!tag.contains("android.os.Handler.dispatchMessage")){
 			return;
 		}
 		
 		long currentTime = System.currentTimeMillis();
 		if(!currentTag.containsKey(tagPid)){
 			currentTag.put(tagPid,new CrashElement.ThreadTagElement(tag,currentTime));
-		}
+			}
 		
 		CrashElement.ThreadTagElement currentTagElement = currentTag.get(tagPid);
 		long deltaTime = currentTime - currentTagElement.startTime;
