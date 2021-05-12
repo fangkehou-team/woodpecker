@@ -9,7 +9,7 @@ import java.util.*;
 public class ANRMonitorService extends Service
 {
 	private static ConcurrentHashMap<Integer,CrashElement.ThreadTag> currentTag = new ConcurrentHashMap<Integer,CrashElement.ThreadTag>();
-	private static List<CrashElement.ThreadTag> anrtags = new ArrayList<CrashElement.ThreadTag>();
+	private static List<String> anrtags = new ArrayList<String>();
 
 	private class ClassRecordHandler extends Handler
 	{
@@ -36,7 +36,7 @@ public class ANRMonitorService extends Service
 	{
 		// TODO: Implement this method
 		int pid = intent.getIntExtra("pid", 0);
-		Log.i("fangkehouWoodPecker", "Starting ANR Monitor for PID" + pid + "(UI Thread Only)");
+		Log.i(CrashGlobal.getLogCatHeader(), "Starting ANR Monitor for PID" + pid + "(UI Thread Only)");
 
 		return super.onStartCommand(intent, flags, startId);
 	}
@@ -70,16 +70,27 @@ public class ANRMonitorService extends Service
 		CrashElement.ThreadTag currentTagElement = currentTag.get(tagPid);
 		long deltaTime = currentTime - currentTagElement.startTime;
 
-		if (currentTagElement.tag.equals(tag) && deltaTime >= 1000L)
+		if (currentTagElement.tag.equals(tag) && deltaTime >= CrashGlobal.getAnrTime())
 		{
 			
 			//ANR occured
-			if(deltaTime >= 6000L)
+			if(deltaTime >= CrashGlobal.getKillTime())
 			{
+				android.os.Process.killProcess(tagPid);
+				Log.i(CrashGlobal.getLogCatHeader(),"kill Process:" + tagPid);
 				
+			}else if(!anrtags.contains(tag))
+			{
+				anrtags.add(tag);
+				//handle ANR
+				Log.i("a cute woodpecker", "Wow! It seems that you have put too much work on this thread!");
+				StringBuilder sb = new StringBuilder();
+				sb.append(CrashElement.PhoneInfo.getInfo(this) + "\n");
+				sb.append(tag);
+				Log.e(CrashGlobal.getLogCatHeader(),sb.toString());
 			}
 			
-			Log.i("a cute woodpecker", "Wow! It seems that you have put too much work on this thread!");
+			
 			return;
 		}
 		else if (!currentTagElement.tag.equals(tag))

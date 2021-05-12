@@ -14,7 +14,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 
 	private static CrashHandler instance = new CrashHandler();
 	private Context mcontext;
-	private ProcesserBase mprocesser;
 	private Thread.UncaughtExceptionHandler defaultHandler;
 	
 	ANRHandlerThread mAnrHandlerThread = new ANRHandlerThread();
@@ -29,16 +28,6 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 		this.mcontext = mcontext;
 	}
 
-	public void setProcesser(ProcesserBase mprocesser)
-	{
-		this.mprocesser = mprocesser;
-	}
-
-	public ProcesserBase getProcesser()
-	{
-		return this.mprocesser;
-	}
-
 	public static CrashHandler getInstance()
 	{
 		return instance;
@@ -49,7 +38,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 		defaultHandler = Thread.getDefaultUncaughtExceptionHandler();
 		
 
-		if (this.mcontext != null && this.mprocesser != null)
+		if (this.mcontext != null)
 		{
 			Thread.setDefaultUncaughtExceptionHandler(this);
 			
@@ -96,13 +85,9 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 			return;
 		}
 
-		String deviceInfo = CrashElement.PhoneInfo.getInfo(mcontext);
-
 		StringBuffer sb = new StringBuffer();
-		
-		sb.append(deviceInfo + "\n");
+		sb.append(CrashElement.PhoneInfo.getInfo(mcontext) + "\n");
         
-
         Writer writer = new StringWriter();
         PrintWriter printWriter = new PrintWriter(writer);
         p2.printStackTrace(printWriter);
@@ -116,16 +101,8 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
         String result = writer.toString();
         sb.append(result);
 		String es = sb.toString();
-		Log.e(CrashGlobal.logCatHeader, es, p2);
-		if (mprocesser != null)
-		{
-			mprocesser.onCrash(mcontext, p2, es);
-		}
-		else
-		{
-			defaultHandler.uncaughtException(p1, p2);
-		}
-
+		Log.e(CrashGlobal.getLogCatHeader(), es, p2);
+		CrashGlobal.getProcesser().onCrash(mcontext, p2, es);
 	}
 
     

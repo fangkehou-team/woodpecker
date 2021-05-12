@@ -46,10 +46,10 @@ public class CrashBuilder
 	}
 	
 	public CrashHandler build(){
-		CrashGlobal.sleepTime = sleeptime;
-		CrashGlobal.anrTime = anrtime;
+		CrashGlobal.setSleepTime(sleeptime);
+		CrashGlobal.setAnrTime(anrtime);
+		CrashGlobal.setProcesser(mprocesser);
 		CrashHandler c = CrashHandler.getInstance();
-		c.setProcesser(mprocesser);
 		c.setContext(mcontext);
 		return c;
 	}
