@@ -9,6 +9,45 @@ import java.util.*;
 
 public class CrashElement
 {
+	public static class ANRException extends RuntimeException
+	{
+		String AMRcause;
+		
+		public ANRException(String cause){
+			this.AMRcause = cause;
+		}
+
+		@Override
+		public String getMessage()
+		{
+			// TODO: Implement this method
+			return new StringBuilder().append("Thread not response at\n").append(this.AMRcause).toString();
+		}
+
+		@Override
+		public Throwable getCause()
+		{
+			// TODO: Implement this method
+			return null;
+		}
+
+		@Override
+		public String getLocalizedMessage()
+		{
+			// TODO: Implement this method
+			return this.getMessage();
+		}
+
+		@Override
+		public StackTraceElement[] getStackTrace()
+		{
+			// TODO: Implement this method
+			return null;
+		}
+
+		
+	}
+	
 	public static class ThreadTag{
 		public String tag;
 		public long startTime;
@@ -78,17 +117,6 @@ public class CrashElement
 					Log.e(CrashGlobal.logCatHeader, "an error occured when collect crash info", e);
 				}
 			}
-			// 增加android版本日志, 不需要 上面已经几乎全部包括了
-//        Field[] versionFields = Build.VERSION.class.getDeclaredFields();
-//        for (Field field : versionFields) {
-//            try {
-//                field.setAccessible(true);
-//                infos.put(field.getName(), field.get(null).toString());
-//                Log.d(TAG, field.getName() + " : " + field.get(null));
-//            } catch (Exception e) {
-//                Log.e(TAG, "an error occured when collect crash info", e);
-//            }
-//        }
 		}
 	}
 	
