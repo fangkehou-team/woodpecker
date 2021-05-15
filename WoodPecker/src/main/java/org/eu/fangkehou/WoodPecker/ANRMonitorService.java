@@ -18,7 +18,7 @@ public class ANRMonitorService extends Service
 		public void handleMessage(Message msg)
 		{
 			// TODO: Implement this method
-			handleThreadTag(msg.what , msg.getData());
+			handleThreadTag(msg.what , msg.getData(),msg.replyTo);
 			super.handleMessage(msg);
 		}
 
@@ -48,7 +48,7 @@ public class ANRMonitorService extends Service
 		super.onDestroy();
 	}
 
-	private void handleThreadTag(int tagPid, Bundle bundle)
+	private void handleThreadTag(int tagPid, Bundle bundle,Messenger replyto)
 	{
 		String tag = bundle.getString("tag", "none");
 
@@ -76,8 +76,18 @@ public class ANRMonitorService extends Service
 			//ANR occured
 			if(deltaTime >= CrashGlobal.getKillTime())
 			{
-				android.os.Process.killProcess(tagPid);
-				Log.i(CrashGlobal.getLogCatHeader(),"kill Process:" + tagPid);
+				CrashElement.ANRException anrexception = new CrashElement.ANRException(tag);
+				Message message = Message.obtain(null, tagPid);
+				Bundle exceptionbundle = new Bundle();
+				bundle.putSerializable("exception",anrexception);
+				message.setData(exceptionbundle);
+				try
+				{
+					replyto.send(message);
+				}
+				catch (RemoteException e)
+				{}
+				Log.i(CrashGlobal.getLogCatHeader(), "kill Process:" + tagPid);
 				
 			}else if(!anrtags.contains(tag))
 			{

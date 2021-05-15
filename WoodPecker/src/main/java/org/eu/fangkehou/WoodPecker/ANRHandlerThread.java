@@ -7,6 +7,24 @@ public class ANRHandlerThread implements Runnable
 	private Boolean isContinue = true;
 	private Messenger mService = null;
 	private int pid = 0;
+	private Messenger selfmessenger = new Messenger(new ExceptionHandler());
+	
+	
+	private class ExceptionHandler extends Handler
+	{
+
+		@Override
+		public void handleMessage(Message msg)
+		{
+			// TODO: Implement this method
+			CrashElement.ANRException exception =  (CrashElement.ANRException) msg.getData().get("exception");
+			if(exception != null)
+			{
+				throw exception;
+			}
+		}
+
+	}
 
 	public ANRHandlerThread(Messenger mService)
 	{
@@ -51,6 +69,7 @@ public class ANRHandlerThread implements Runnable
 			}
 			String threadtag =  threadtagbuilder.toString();
 			Message message = Message.obtain(null, pid);
+			message.replyTo = selfmessenger;
 			Bundle bundle = new Bundle();
 			bundle.putString("tag",threadtag);
 			message.setData(bundle);

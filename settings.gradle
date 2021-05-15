@@ -1,1 +1,3 @@
+rootProject.name = "WoodPeckerDemo"
 include ':app'
+include ':WoodPecker'
