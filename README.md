@@ -1,14 +1,16 @@
 # WoodPecker
 
-** 一个Java Crash / ANR 监测库 **
+**一个Java Crash / ANR 监测库**
 
-** a Java Crash / ANR monitor **
+**a Java Crash / ANR monitor**
 
 ## 中文 (You can find the English version below)
 
 ### 介绍
 
 WoodPecker (其实叫“啄木鸟”也可以呢) 是用于监测Android 程序 Java Crash 和 ANR 并进行处理并汇报的库，最初是为了给自己写的垃圾Crash上报的能力，不过本着菜鸟互帮互助的心理还是把自己写的垃圾开源了，请各位dalao不要喷我ㄟ( ▔, ▔ )ㄏ
+
+**我大天朝的网络环境大家也是知道的，光是打开Github就有够让人闹心的了，所以在Gitee上的仓库是随时更新的，只在出现了新版本之后才会对Github进行更新（毕竟jitpack对Github的相性还是最好的）所以大家如果想要PR或者发Issue请在[Gitee仓库](https://gitee.com/zmsw/woodpecker/ "woodpecker")发，谢谢了。
 
 ### 使用方法
 
