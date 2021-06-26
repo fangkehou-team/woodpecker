@@ -58,7 +58,7 @@ public class ANRHandlerThread implements Runnable
 			try
 			{
 				mService.send(message);
-				Thread.sleep(CrashGlobal.sleepTime);
+				Thread.sleep(CrashGlobal.getSleepTime());
 			}
 			catch (InterruptedException e)
 			{

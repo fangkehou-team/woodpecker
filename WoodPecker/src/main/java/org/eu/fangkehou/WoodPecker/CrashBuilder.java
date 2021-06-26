@@ -9,6 +9,8 @@ public class CrashBuilder
 	
 	private long sleeptime = 50L;
 	private long anrtime = 1000L;
+
+	private long killtime = 6000L;
 	
 	private CrashBuilder(){
 	}
@@ -35,6 +37,14 @@ public class CrashBuilder
 	{
 		return anrtime;
 	}
+
+	public long getKilltime() {
+		return killtime;
+	}
+
+	public void setKilltime(long killtime) {
+		this.killtime = killtime;
+	}
 	
 	public static CrashBuilder from(Context context){
 		return new CrashBuilder(context);
@@ -49,6 +59,7 @@ public class CrashBuilder
 		CrashGlobal.setSleepTime(sleeptime);
 		CrashGlobal.setAnrTime(anrtime);
 		CrashGlobal.setProcesser(mprocesser);
+		CrashGlobal.setKillTime(killtime);
 		CrashHandler c = CrashHandler.getInstance();
 		c.setContext(mcontext);
 		return c;

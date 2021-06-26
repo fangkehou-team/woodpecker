@@ -20,7 +20,7 @@ WoodPecker (其实叫“啄木鸟”也可以呢) 是用于监测Android 程序 
 
 ```java
 
-CrashBuilder.from(getApplicationContext())[.setSleeptime(50L)][.setAnrtime(1000L)][.setProcesser(new DemoProcesser())].build().init();
+CrashBuilder.from(getApplicationContext())[.setSleeptime(50L)][.setKilltime(1000L)][.setAnrtime(1000L)][.setProcesser(new DemoProcesser())].build().init();
 
 ```
 
@@ -30,7 +30,9 @@ CrashBuilder.from(Context mcontext) WoodPeckerBuilder初始化，需要传入Con
 
 setSleeptime(Long sleeptime) WoodPecker在监测ANR是需要开启一个独立线程不断获取主线程堆栈，该数值是每获取一次堆栈休眠的时间，默认为50ms
 
-setAnrtime(Long anrtime) WoodPecker将在一个进程运行超过这个时间之后判定程序出现ANR，默认为1s
+setAnrtime(Long anrtime) WoodPecker将在一个进程无响应超过这个时间之后判定程序出现ANR，默认为1s
+
+setKilltime(Long killtime) WoodPecker将会在一个进程无响应超过这个时间之后强制杀掉该进程，默认为6s，设定为-1则关闭该功能
 
 setProcesser(ProcesserBase processer) 当出现Java Crash或者ANR之后，WoodPecker将会使用该processer相应的函数处理错误（需要自己实现一个ProcesserBase），默认为WoodPecker自带的ProcesserDemo
 
