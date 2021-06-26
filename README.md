@@ -16,7 +16,7 @@ WoodPecker (其实叫“啄木鸟”也可以呢) 是用于监测Android 程序 
 
 ### 使用方法
 
-~~ 由于暂时还没有上传到jitpack或者maven central，所以暂时还是只能下载源码然后调用（我稍后会处理好jitpack，如果有时间的话去搞一搞maven central，不过听说很麻烦，所以不要抱太大希望吧） ~~
+~~由于暂时还没有上传到jitpack或者maven central，所以暂时还是只能下载源码然后调用（我稍后会处理好jitpack，如果有时间的话去搞一搞maven central，不过听说很麻烦，所以不要抱太大希望吧）~~
 
 已经上传到了jitpack（maven central我还得努力一下，别抱太大希望） 请按照如下方式引用：
 
