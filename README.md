@@ -4,6 +4,8 @@
 
 **a Java Crash / ANR monitor**
 
+[![](https://jitpack.io/v/fangkehou-team/woodpecker.svg)](https://jitpack.io/#fangkehou-team/woodpecker)
+
 ## 中文 (You can find the English version below)
 
 ### 介绍
@@ -14,7 +16,26 @@ WoodPecker (其实叫“啄木鸟”也可以呢) 是用于监测Android 程序 
 
 ### 使用方法
 
-由于暂时还没有上传到jitpack或者maven central，所以暂时还是只能下载源码然后调用（我稍后会处理好jitpack，如果有时间的话去搞一搞maven central，不过硬说很麻烦，所以不要抱太大希望吧）
+~~ 由于暂时还没有上传到jitpack或者maven central，所以暂时还是只能下载源码然后调用（我稍后会处理好jitpack，如果有时间的话去搞一搞maven central，不过听说很麻烦，所以不要抱太大希望吧） ~~
+
+已经上传到了jitpack（maven central我还得努力一下，别抱太大希望） 请按照如下方式引用：
+
+在project根目录下的build.gradle加入如下语句:
+```
+allprojects {
+		repositories {
+			...
+			maven { url 'https://jitpack.io' }
+		}
+	}
+```
+
+然后添加依赖
+```
+dependencies {
+	        implementation 'com.github.fangkehou-team:woodpecker:Tag'
+	}
+```
 
 如果你已经引入了这个项目，那么你可以通过如下的一段代码去初始化然后进行工作 (被[]包裹的代码并不是必须的，但是大部分应用在初始化的时候都需要对这些参数进行调整)：
 
