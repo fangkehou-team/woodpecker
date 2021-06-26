@@ -33,7 +33,7 @@ allprojects {
 然后添加依赖
 ```
 dependencies {
-	        implementation 'com.github.fangkehou-team:woodpecker:Tag'
+	        implementation 'com.github.fangkehou-team:woodpecker:v1.0'
 	}
 ```
 
