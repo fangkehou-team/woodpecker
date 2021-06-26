@@ -4,54 +4,17 @@ import android.content.*;
 import android.content.pm.*;
 import android.os.*;
 import android.util.*;
+
+import java.io.Serializable;
 import java.lang.reflect.*;
 import java.util.*;
 
 public class CrashElement
 {
-	public static class ANRException extends RuntimeException
-	{
-		String AMRcause;
-		
-		public ANRException(String cause){
-			this.AMRcause = cause;
-		}
-
-		@Override
-		public String getMessage()
-		{
-			// TODO: Implement this method
-			return new StringBuilder().append("Thread not response at\n").append(this.AMRcause).toString();
-		}
-
-		@Override
-		public Throwable getCause()
-		{
-			// TODO: Implement this method
-			return null;
-		}
-
-		@Override
-		public String getLocalizedMessage()
-		{
-			// TODO: Implement this method
-			return this.getMessage();
-		}
-
-		@Override
-		public StackTraceElement[] getStackTrace()
-		{
-			// TODO: Implement this method
-			return null;
-		}
-
-		
-	}
 	
-	public static class ThreadTag{
+	public static class ThreadTag implements Serializable {
 		public String tag;
 		public long startTime;
-		public long endTime;
 
 		public ThreadTag(String tag, long startTime)
 		{
@@ -62,18 +25,18 @@ public class CrashElement
 	
 	public static class PhoneInfo
 	{
-		private static Map<String, String> infos = new HashMap<String, String>();
+		private static final Map<String, String> infos = new HashMap<>();
 		
 		public static String getInfo(Context context){
 			
 			collectDeviceInfo(context);
 			
-			StringBuffer sb = new StringBuffer();
+			StringBuilder sb = new StringBuilder();
 			for (Map.Entry<String, String> entry : infos.entrySet())
 			{
 				String key = entry.getKey();
 				String value = entry.getValue();
-				sb.append(key + "=" + value + "\n");
+				sb.append(key).append("=").append(value).append("\n");
 			}
 			
 			return sb.toString();
@@ -109,7 +72,7 @@ public class CrashElement
 				try
 				{
 					field.setAccessible(true);
-					infos.put(field.getName(), field.get(null).toString());
+					infos.put(field.getName(), Objects.requireNonNull(field.get(null)).toString());
 					Log.d(CrashGlobal.logCatHeader, field.getName() + " : " + field.get(null));
 				}
 				catch (Exception e)

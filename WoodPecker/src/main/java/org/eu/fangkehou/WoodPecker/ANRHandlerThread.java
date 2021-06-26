@@ -1,4 +1,5 @@
 package org.eu.fangkehou.WoodPecker;
+import android.os.Process;
 import android.util.*;
 import android.os.*;
 
@@ -6,25 +7,8 @@ public class ANRHandlerThread implements Runnable
 {
 	private Boolean isContinue = true;
 	private Messenger mService = null;
-	private int pid = 0;
-	private Messenger selfmessenger = new Messenger(new ExceptionHandler());
-	
-	
-	private class ExceptionHandler extends Handler
-	{
+	private final int pid;
 
-		@Override
-		public void handleMessage(Message msg)
-		{
-			// TODO: Implement this method
-			CrashElement.ANRException exception =  (CrashElement.ANRException) msg.getData().get("exception");
-			if(exception != null)
-			{
-				throw exception;
-			}
-		}
-
-	}
 
 	public ANRHandlerThread(Messenger mService)
 	{
@@ -62,14 +46,12 @@ public class ANRHandlerThread implements Runnable
 		while (this.isContinue)
 		{
 			StringBuilder threadtagbuilder = new StringBuilder();
-			StackTraceElement st[] = Looper.getMainLooper().getThread().getStackTrace();
-			for (int i=0;i < st.length;i++)
-			{
-				threadtagbuilder.append(st[i] + "\n");
+			StackTraceElement[] st = Looper.getMainLooper().getThread().getStackTrace();
+			for (StackTraceElement stackTraceElement : st) {
+				threadtagbuilder.append(stackTraceElement).append("\n");
 			}
 			String threadtag =  threadtagbuilder.toString();
 			Message message = Message.obtain(null, pid);
-			message.replyTo = selfmessenger;
 			Bundle bundle = new Bundle();
 			bundle.putString("tag",threadtag);
 			message.setData(bundle);

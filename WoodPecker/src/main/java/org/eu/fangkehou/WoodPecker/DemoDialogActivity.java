@@ -21,7 +21,7 @@ public class DemoDialogActivity extends Activity implements OnClickListener
 	{
 		// TODO: Implement this method
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.DemoCrashDialog);
+		setContentView(R.layout.woodpecker_demo_crash_dialog);
 		
 		LinearLayout dialogroot = findViewById(R.id.DemoCrashDialogRootLinearLayout);
 		

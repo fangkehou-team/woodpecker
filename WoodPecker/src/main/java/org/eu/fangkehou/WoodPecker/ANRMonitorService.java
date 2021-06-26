@@ -1,16 +1,20 @@
 package org.eu.fangkehou.WoodPecker;
+import android.annotation.SuppressLint;
 import android.app.*;
 import android.content.*;
 import android.os.*;
 import android.util.*;
+
+import java.io.Serializable;
 import java.util.concurrent.*;
 import java.util.*;
 
 public class ANRMonitorService extends Service
 {
-	private static ConcurrentHashMap<Integer,CrashElement.ThreadTag> currentTag = new ConcurrentHashMap<Integer,CrashElement.ThreadTag>();
-	private static List<String> anrtags = new ArrayList<String>();
+	private static final ConcurrentHashMap<Integer,CrashElement.ThreadTag> currentTag = new ConcurrentHashMap<Integer,CrashElement.ThreadTag>();
+	private static final List<String> anrtags = new ArrayList<String>();
 
+	@SuppressLint("HandlerLeak")
 	private class ClassRecordHandler extends Handler
 	{
 
@@ -18,7 +22,7 @@ public class ANRMonitorService extends Service
 		public void handleMessage(Message msg)
 		{
 			// TODO: Implement this method
-			handleThreadTag(msg.what , msg.getData(),msg.replyTo);
+			handleThreadTag(msg.what , msg.getData());
 			super.handleMessage(msg);
 		}
 
@@ -48,16 +52,13 @@ public class ANRMonitorService extends Service
 		super.onDestroy();
 	}
 
-	private void handleThreadTag(int tagPid, Bundle bundle,Messenger replyto)
+	private void handleThreadTag(int tagPid, Bundle bundle)
 	{
 		String tag = bundle.getString("tag", "none");
 
 		if (!tag.contains("android.os.Handler.dispatchMessage"))
 		{
-			if (currentTag.containsKey(tagPid))
-			{
-				currentTag.remove(tagPid);
-			}
+			currentTag.remove(tagPid);
 			return;
 		}
 
@@ -68,6 +69,7 @@ public class ANRMonitorService extends Service
 		}
 
 		CrashElement.ThreadTag currentTagElement = currentTag.get(tagPid);
+		assert currentTagElement != null;
 		long deltaTime = currentTime - currentTagElement.startTime;
 
 		if (currentTagElement.tag.equals(tag) && deltaTime >= CrashGlobal.getAnrTime())
@@ -76,17 +78,7 @@ public class ANRMonitorService extends Service
 			//ANR occured
 			if(deltaTime >= CrashGlobal.getKillTime())
 			{
-				CrashElement.ANRException anrexception = new CrashElement.ANRException(tag);
-				Message message = Message.obtain(null, tagPid);
-				Bundle exceptionbundle = new Bundle();
-				bundle.putSerializable("exception",anrexception);
-				message.setData(exceptionbundle);
-				try
-				{
-					replyto.send(message);
-				}
-				catch (RemoteException e)
-				{}
+				android.os.Process.killProcess(tagPid);
 				Log.i(CrashGlobal.getLogCatHeader(), "kill Process:" + tagPid);
 				
 			}else if(!anrtags.contains(tag))
@@ -94,22 +86,18 @@ public class ANRMonitorService extends Service
 				anrtags.add(tag);
 				//handle ANR
 				Log.i("a cute woodpecker", "Wow! It seems that you have put too much work on this thread!");
-				StringBuilder sb = new StringBuilder();
-				sb.append(CrashElement.PhoneInfo.getInfo(this) + "\n");
-				sb.append(tag);
-				Log.e(CrashGlobal.getLogCatHeader(),sb.toString());
+				String sb = CrashElement.PhoneInfo.getInfo(this) + "\n" +
+						tag;
+				Log.e(CrashGlobal.getLogCatHeader(), sb);
 			}
-			
-			
-			return;
+
+
 		}
 		else if (!currentTagElement.tag.equals(tag))
 		{
 			currentTag.replace(tagPid, new CrashElement.ThreadTag(tag, currentTime));
-			return;
 		}
 
-		return;
 	}
 
 
