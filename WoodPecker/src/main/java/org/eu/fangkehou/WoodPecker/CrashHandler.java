@@ -110,6 +110,7 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 		String es = sb.toString();
 		Log.e(CrashGlobal.getLogCatHeader(), es, p2);
 		CrashGlobal.getProcesser().onCrash(mcontext, p2, es);
+		System.exit(0);
 	}
 
     
