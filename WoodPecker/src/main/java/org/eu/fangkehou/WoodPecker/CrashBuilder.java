@@ -6,6 +6,7 @@ public class CrashBuilder
 	
 	private Context mcontext;
 	private ProcesserBase mprocesser = new DemoProcesser();
+	private boolean withANRHandler = true;
 	
 	private long sleeptime = 50L;
 	private long anrtime = 1000L;
@@ -16,6 +17,10 @@ public class CrashBuilder
 	}
 	private CrashBuilder(Context context){
 		mcontext = context;
+	}
+
+	public void setWithANRHandler(boolean withANRHandler){
+		this.withANRHandler = withANRHandler;
 	}
 
 	public void setSleeptime(long sleeptime)
@@ -61,6 +66,7 @@ public class CrashBuilder
 		CrashGlobal.setProcesser(mprocesser);
 		CrashGlobal.setKillTime(killtime);
 		CrashHandler c = CrashHandler.getInstance();
+		c.setWithANRHandler(withANRHandler);
 		c.setContext(mcontext);
 		return c;
 	}

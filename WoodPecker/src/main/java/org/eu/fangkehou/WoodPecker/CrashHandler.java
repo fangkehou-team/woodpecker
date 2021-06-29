@@ -1,4 +1,5 @@
 package org.eu.fangkehou.WoodPecker;
+import android.annotation.SuppressLint;
 import android.content.*;
 import android.content.pm.*;
 import android.os.*;
@@ -12,15 +13,21 @@ import android.widget.*;
 public class CrashHandler implements Thread.UncaughtExceptionHandler
 {
 
-	private static CrashHandler instance = new CrashHandler();
+	@SuppressLint("StaticFieldLeak")
+	private static final CrashHandler instance = new CrashHandler();
 	private Context mcontext;
 	private Thread.UncaughtExceptionHandler defaultHandler;
+	private boolean withANRHandler;
 	
 	ANRHandlerThread mAnrHandlerThread = new ANRHandlerThread();
 	
 	private CrashHandler()
 	{
 
+	}
+
+	public void setWithANRHandler(boolean withANRHandler){
+		this.withANRHandler = withANRHandler;
 	}
 
 	public void setContext(Context mcontext)
@@ -41,35 +48,35 @@ public class CrashHandler implements Thread.UncaughtExceptionHandler
 		if (this.mcontext != null)
 		{
 			Thread.setDefaultUncaughtExceptionHandler(this);
-			
-			Intent i = new Intent(mcontext, ANRMonitorService.class);
-			i.putExtra("pid",android.os.Process.myPid());
-			
-			ServiceConnection mConn = new ServiceConnection(){
 
-				@Override
-				public void onServiceConnected(ComponentName p1, IBinder p2)
-				{
-					
-					mAnrHandlerThread.setMessager(new Messenger(p2));
-					new Thread(mAnrHandlerThread).start();
-				}
+			if (withANRHandler){
+				Intent i = new Intent(mcontext, ANRMonitorService.class);
+				i.putExtra("pid",android.os.Process.myPid());
 
-				@Override
-				public void onServiceDisconnected(ComponentName p1)
-				{
-					
-					mAnrHandlerThread.stopWorking();
-				}
-				
-				
-			};
-			
-			mcontext.bindService(i,mConn,mcontext.BIND_AUTO_CREATE);
+				ServiceConnection mConn = new ServiceConnection(){
+
+					@Override
+					public void onServiceConnected(ComponentName p1, IBinder p2)
+					{
+
+						mAnrHandlerThread.setMessager(new Messenger(p2));
+						new Thread(mAnrHandlerThread).start();
+					}
+
+					@Override
+					public void onServiceDisconnected(ComponentName p1)
+					{
+
+						mAnrHandlerThread.stopWorking();
+					}
+
+
+				};
+
+				mcontext.bindService(i,mConn, Context.BIND_AUTO_CREATE);
+			}
 			
 		}
-
-		
 		
 	}
 

@@ -19,7 +19,6 @@ public class DemoProcesser implements ProcesserBase
 		Intent i = new Intent(mContext,DemoDialogActivity.class);
 		i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 		mContext.startActivity(i);
-		System.exit(0);
 	}
 	
 	

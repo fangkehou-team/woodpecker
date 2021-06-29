@@ -41,13 +41,15 @@ dependencies {
 
 ```java
 
-CrashBuilder.from(getApplicationContext())[.setSleeptime(50L)][.setKilltime(1000L)][.setAnrtime(1000L)][.setProcesser(new DemoProcesser())].build().init();
+CrashBuilder.from(getApplicationContext())[.setWithANRHandler(true)][.setSleeptime(50L)][.setKilltime(1000L)][.setAnrtime(1000L)][.setProcesser(new DemoProcesser())].build().init();
 
 ```
 
 解释：
 
 CrashBuilder.from(Context mcontext) WoodPeckerBuilder初始化，需要传入Context （可以是application，activity，service等等，**不过大部分应用在这里都会传application的Context吧。。。。。**）
+
+setWithANRHandler(boolean withANRHandler) 是否对无响应进行监测，默认为true
 
 setSleeptime(Long sleeptime) WoodPecker在监测ANR是需要开启一个独立线程不断获取主线程堆栈，该数值是每获取一次堆栈休眠的时间，默认为50ms
 
